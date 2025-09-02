@@ -1,0 +1,97 @@
+<!doctype html>
+
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>:></title>
+  <style>
+    :root{ --accent:#ff4d6d; --bg:#fff7fb; }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial,Helvetica,sans-serif;background:linear-gradient(180deg,var(--bg),#fff);color:#222;overflow:hidden}
+    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px}
+    .card{width:100%;max-width:720px;background:rgba(255,255,255,0.9);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,0.08);padding:28px; text-align:center;position:relative}
+    img.avatar{width:220px;height:220px;object-fit:cover;border-radius:14px;border:6px solid #fff;box-shadow:0 8px 20px rgba(0,0,0,0.08);}
+    h1{font-size:20px;margin:18px 0 8px}
+    p.question{font-size:18px;margin:6px 0 20px}.controls{display:flex;gap:14px;align-items:center;justify-content:center;position:relative;z-index:5;flex-wrap:wrap}
+button.btn{padding:12px 22px;border-radius:12px;border:none;font-weight:700;font-size:16px;cursor:pointer;transition:transform 220ms ease, box-shadow 200ms;outline:none;position:relative}
+button.btn:active{transform:scale(0.98)}
+.yes{background:linear-gradient(90deg,#ffb3c6,var(--accent));color:white;box-shadow:0 8px 24px rgba(255,77,109,0.24)}
+.no{background:#f3f3f3;color:#555;}
+
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--accent);color:white;font-weight:900;font-size:clamp(36px,14vw,220px);z-index:9999;transition:opacity 300ms;}
+.hidden{display:none}
+
+.meta{margin-top:18px;font-size:13px;color:#666}
+.hint{margin-top:10px;font-size:13px;color:#999}
+
+@media (max-width:480px){img.avatar{width:140px;height:140px} .card{padding:18px} }
+
+  </style>
+</head>
+<body>
+  <div class="wrap" id="mainContent">
+    <div class="card" role="main" aria-labelledby="title">
+      <img class="avatar" id="avatar" src="https://i.pinimg.com/originals/f1/32/8c/f1328c6a4ce83a779245f5c1f9281e18.gif" alt="">
+      <h1 id="title">Cho anh 200k đi</h1>
+      <p class="question">Chọn một câu trả lời thật lòng nhé 🥺</p><div class="controls">
+    <button id="yesBtn" class="btn yes" aria-label="Đồng ý">Đồng ý</button>
+    <button id="noBtn" class="btn no" aria-label="Không">Không</button>
+  </div>
+
+</div>
+
+  </div>  <div id="overlay" class="overlay hidden" role="dialog" aria-modal="true">
+    <button id="bigYes" style="all:unset;cursor:pointer;display:inline-block;text-align:center;padding:40px 60px;">ĐỒNG Ý ❤️</button>
+  </div>  <script>
+    (function(){
+      const yesBtn = document.getElementById('yesBtn');
+      const noBtn = document.getElementById('noBtn');
+      const overlay = document.getElementById('overlay');
+      const bigYes = document.getElementById('bigYes');
+      const mainContent = document.getElementById('mainContent');
+
+      function randomPosition(){
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const btnW = noBtn.offsetWidth;
+        const btnH = noBtn.offsetHeight;
+        const x = Math.random() * (vw - btnW - 40) + 20;
+        const y = Math.random() * (vh - btnH - 40) + 20;
+        return {x,y};
+      }
+
+      function moveNoBtn(){
+        const pos = randomPosition();
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = pos.x + 'px';
+        noBtn.style.top = pos.y + 'px';
+      }
+
+      function showOverlay(){
+        overlay.classList.remove('hidden');
+        overlay.style.opacity = '1';
+        bigYes.addEventListener('click', accept);
+      }
+
+      function accept(){
+        document.body.innerHTML = `
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#ff9a9e,#fad0c4);color:#fff;text-align:center;padding:20px">
+            <h1 style="font-size:clamp(28px,8vw,64px);margin-bottom:20px">Anh biết ngay mà ❤️</h1>
+            <p style="font-size:20px;max-width:600px;margin:0 auto 24px">Cảm ơn em đã đồng ý! Quét mã đi</p>
+            <img src="./img/anh.jpg" alt="love gif" style="width:300px;height:300px;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,0.2)" />
+          </div>
+        `;
+      }
+
+      yesBtn.addEventListener('click', (e)=>{
+        e.preventDefault();
+        accept();
+      });
+
+      noBtn.addEventListener('mouseover', moveNoBtn);
+      noBtn.addEventListener('click', moveNoBtn);
+
+    })();
+  </script></body>
+</html>
